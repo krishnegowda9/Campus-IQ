@@ -21,63 +21,61 @@ Campus-IQ runs completely local AI models from Hugging Face for embeddings and t
 | **Embedding Model** | `sentence-transformers/all-MiniLM-L6-v2` | Converts document chunks and user queries into 384-dimensional dense vector representations for semantic search. |
 | **Local LLM** | `google/flan-t5-base` | Seq2Seq text generation model used to synthesize answers grounded in retrieved document context. |
 
+## 🔄 End-to-End RAG Workflow
 
-
-## 🔄 Final End-to-End Workflow
-
-```gantt
-┌────────────────────────────────────────────────────────────────────────┐
-│                          📄 PDF DOCUMENTS                             │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │   📄 PyMuPDF Loader  │
-                        └───────────┬──────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │  ✂️ Text Chunker     │
-                        └───────────┬──────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │ 🧠 Embedding Model   │
-                        │ (Hugging Face 384-D) │
-                        └───────────┬──────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │ 🗄️ Vector Database    │
-                        │    (ChromaDB Store)  │
-                        └───────────┬──────────┘
-                                    │
- ┌──────────────────────────────────┴──────────────────────────────────┐
- │                         👤 USER QUESTION                             │
- └──────────────────────────────────┬──────────────────────────────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │ 🔎 Semantic Search   │
-                        │   (Top Matching)     │
-                        └───────────┬──────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │ 🧩 Context Builder   │
-                        └───────────┬──────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │ 🤖 Local LLM         │
-                        │   (Hugging Face)     │
-                        └───────────┬──────────┘
-                                    │
-                                    ▼
-                        ┌──────────────────────┐
-                        │ 💬 Gradio Interface  │
-                        │ (Answer + Sources)   │
-                        └──────────────────────┘
+```text
+┌──────────────────────────────────────────────────────────────────┐
+│                      📄 PDF DOCUMENTS                            │
+└────────────────────────────────┬─────────────────────────────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │   📄 PyMuPDF Loader    │
+                    └────────────┬───────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │   ✂️ Text Chunker       │
+                    └────────────┬───────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │   🧠 Embedding Model   │
+                    │  (Hugging Face 384-D)  │
+                    └────────────┬───────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │   🗄️ Vector Database    │
+                    │    (ChromaDB Store)    │
+                    └────────────┬───────────┘
+                                 │
+┌────────────────────────────────┴─────────────────────────────────┐
+│                        👤 USER QUESTION                          │
+└────────────────────────────────┬─────────────────────────────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │   🔎 Semantic Search   │
+                    │   (Cosine Similarity)  │
+                    └────────────┬───────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │   🧩 Context Builder   │
+                    └────────────┬───────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │     🤖 Local LLM       │
+                    │    (Hugging Face)      │
+                    └────────────┬───────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │   💬 Gradio Interface  │
+                    │   (Answer + Sources)   │
+                    └────────────────────────┘
 
 ---
 
@@ -117,55 +115,68 @@ Campus-IQ runs completely local AI models from Hugging Face for embeddings and t
                     │    Final Answer     │
                     └─────────────────────┘
 
-## 📂 Project Structure
+### 📂 Directory Architecture
 
 ```text
-Campus-IQ/
-├── app.py                  # Main Gradio application entry point
-├── rag_pipeline.py          # Core RAG orchestration pipeline
-├── Dockerfile               # Container build configuration
-├── requirements.txt         # Python dependency specifications
+📦 Campus-IQ
+├── 📄 app.py                  ──► Main UI entrypoint (Gradio application)
+├── ⚙️ rag_pipeline.py         ──► End-to-end RAG workflow orchestrator
+├── 🐳 Dockerfile               ──► Containerization environment specs
+├── 📋 requirements.txt        ──► Core dependencies & package definitions
 │
-├── chunker/                 # Text splitting logic
-│   └── text_chunker.py
-├── database/                # Vector store setup, ingestion & retrieval
-│   ├── chroma_store.py
-│   ├── ingest.py
-│   └── retriever.py
-├── embeddings/              # Embedding model wrappers & batch generation
-│   ├── embedding_model.py
-│   └── embed_documents.py
-├── generator/               # Local Hugging Face LLM inference module
-│   └── text_generator.py
-├── pdf_loader/              # PDF parsing utilities
-│   └── pdf_loader.py
-└── data/                    # Document directory
-    └── pdfs/                # Source PDFs for ingestion
+├── 📂 chunker/                ──► Text segmentation module
+│   └── 📄 text_chunker.py     ──► Context-aware document splitting logic
+│
+├── 📂 database/               ──► Persistence & retrieval layer
+│   ├── 📄 chroma_store.py     ──► Vector DB client & collection management
+│   ├── 📄 ingest.py           ──► Batch document indexing pipeline
+│   └── 📄 retriever.py        ──► Semantic similarity query engine
+│
+├── 📂 embeddings/             ──► Vector embedding generation
+│   ├── 📄 embedding_model.py  ──► Hugging Face transformer model loader
+│   └── 📄 embed_documents.py  ──► Batch text-to-vector encoding utilities
+│
+├── 📂 generator/              ──► Text generation engine
+│   └── 📄 text_generator.py   ──► Local Hugging Face LLM inference interface
+│
+├── 📂 pdf_loader/             ──► Document ingestion utilities
+│   └── 📄 pdf_loader.py       ──► High-performance PyMuPDF text parser
+│
+└── 📂 data/                   ──► Raw data storage
+    └── 📂 pdfs/               ──► Input document directory
+        └── 📄 sample.pdf      ──► Target PDF files for processing
 
 ### 🔄 How the RAG Pipeline Works
-1. **PDF Ingestion:** Extracts text from documents stored in `data/pdfs/`.
-2. **Text Chunking:** Splits extracted text into smaller, manageable chunks for fast retrieval.
-3. **Embedding Generation:** Converts each chunk into a 384-dimensional vector representation using a Hugging Face model.
-4. **Vector Storage:** Stores embeddings and text chunks persistently in the `campus_iq_documents` ChromaDB collection.
-5. **Question Embedding:** Embeds the incoming user query using the same embedding model.
-6. **Semantic Search:** Performs cosine similarity search in ChromaDB to retrieve the most relevant text chunks.
-7. **Context Assembly:** Combines the top retrieved chunks into a prompt context block.
-8. **Answer Generation:** Runs the local Hugging Face model to synthesize a final answer grounded in the retrieved context.
 
-### 🛠️ Tech Stack
+| Step | Stage | Action & Function | Output / Artifact |
+| :---: | :--- | :--- | :--- |
+| **01** | **PDF Ingestion** | Extracts raw text from source PDF files stored in `data/pdfs/`. | Unstructured Text |
+| **02** | **Text Chunking** | Splits extracted text into uniform, semantically rich chunks for retrieval. | Text Chunks |
+| **03** | **Embedding Generation** | Encodes each text chunk into a 384-dimensional dense vector via Hugging Face. | Dense Vectors (384-D) |
+| **04** | **Vector Storage** | Indexes and stores vectors persistently in ChromaDB collection (`campus_iq_documents`). | Persistent Vector Store |
+| **05** | **Question Embedding** | Converts incoming user queries into vector space using the same embedding model. | Query Vector |
+| **06** | **Semantic Search** | Computes cosine similarity in ChromaDB to extract the top-matching document chunks. | Relevant Document Chunks |
+| **07** | **Context Assembly** | Constructs a structured prompt block combining user query and retrieved context chunks. | Enriched Prompt Context |
+| **08** | **Answer Generation** | Executes local Hugging Face LLM inference to synthesize a grounded response with source links. | Final Answer + Sources |
 
-| Technology | Purpose |
-| :--- | :--- |
-| **Python** | Core programming language |
-| **Hugging Face** | AI model ecosystem |
-| **Sentence Transformers** | Dense vector embeddings |
-| **Transformers** | Local text generation inference |
-| **ChromaDB** | Vector database for similarity search |
-| **PyMuPDF** | High-performance PDF text extraction |
-| **Gradio** | Interactive web UI framework |
-| **Docker** | Containerization and environment isolation |
-| **Git** | Distributed version control |
-| **GitHub** | Source code hosting and repository management |
+
+
+### 🛠️ Tech Stack & Ecosystem
+
+### 🛠️ Tech Stack & Ecosystem
+
+| Layer | Technology | Purpose & Architectural Role |
+| :--- | :--- | :--- |
+| ![Backend](https://img.shields.io/badge/Language-3776AB?style=flat-square&logo=python&logoColor=white) | **Python 3.x** | Core programming language powering the entire backend |
+| ![AI Hub](https://img.shields.io/badge/AI_Hub-FFD21E?style=flat-square&logo=huggingface&logoColor=black) | **Hugging Face** | Central hub for pre-trained embeddings & LLM download pipelines |
+| ![Vectors](https://img.shields.io/badge/Embeddings-4B8BBE?style=flat-square&logo=python&logoColor=white) | **Sentence Transformers** | Encodes document chunks into dense 384-D vector representations |
+| ![Inference](https://img.shields.io/badge/Inference-FF6F00?style=flat-square&logo=tensorflow&logoColor=white) | **Transformers** | Executes local LLM text generation directly on machine hardware |
+| ![Vector DB](https://img.shields.io/badge/Vector_DB-008080?style=flat-square) | **ChromaDB** | Vector database for persistent similarity indexing & fast retrieval |
+| ![PDF](https://img.shields.io/badge/Parser-E25A1C?style=flat-square&logo=adobeacrobatreader&logoColor=white) | **PyMuPDF** | Ultra-fast PDF text extraction and document parsing engine |
+| ![UI](https://img.shields.io/badge/Frontend-orange?style=flat-square&logo=gradio&logoColor=white) | **Gradio** | Powers the interactive web application interface |
+| ![Docker](https://img.shields.io/badge/Container-2496ED?style=flat-square&logo=docker&logoColor=white) | **Docker** | Isolated container environment for multi-platform deployment |
+| ![Version Control](https://img.shields.io/badge/VCS-181717?style=flat-square&logo=github&logoColor=white) | **Git & GitHub** | Source code management, repository hosting, and versioning |
+
 
 ### 🚀 Quick Start (Local Setup)
 
@@ -187,6 +198,7 @@ pip install -r requirements.txt
 
 4.Add and ingest documents
 Place your PDF files in data/pdfs/ and run the ingestion pipeline:
+
 python -m database.ingest
 Ingestion Flow: PDF ──► Text Extraction ──► Chunking ──► Embedding Generation ──► ChromaDB
 
@@ -205,8 +217,10 @@ docker build -t campus-iq .
 Run the Container
 docker run -p 7860:7860 campus-iq
 
-Open the application:
-http://localhost:7860
+Access the Application
+Open your browser and navigate to:
+
+Application Interface: http://localhost:7860
 
 Check the Container
 docker ps
@@ -214,18 +228,15 @@ docker ps
 Expected port mapping:
 0.0.0.0:7860->7860/tcp
 
-🤗 Hugging Face
-Campus-IQ uses Hugging Face models for embeddings and local text generation.
+### 🤗 Hugging Face Integration
 
-During startup you may see:
-Warning: You are sending unauthenticated requests to the HF Hub.
-This is a warning and does not necessarily mean the application has failed.
+Campus-IQ utilizes Hugging Face pipelines for entirely local, privacy-focused inference:
 
-Authentication can provide higher Hugging Face Hub rate limits.
+* **Embedding Model:** `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional vector encoding)
+* **Local LLM:** `google/flan-t5-base` (Grounded answer generation)
 
-For production usage, configure your Hugging Face token securely.
-
-⚠️ Never commit your Hugging Face token to GitHub.
+> **Note on Authentication:**  
+> During initial startup, you may see a warning regarding *unauthenticated requests to HF Hub*. This is expected behavior for open-access public models and does **not** interrupt application execution. For high-throughput or production environments, set your `HF_TOKEN` environment variable.
 
 
 💡 Example Questions
@@ -247,58 +258,6 @@ Why are containers lightweight?
 How does Docker work?
 
 
-📌 Current Status
-Completed
- PDF loading
- PDF text extraction
- Text chunking
- Embedding generation
- ChromaDB integration
- Semantic search
- Document retrieval
- Local text generation
- RAG pipeline
- Gradio interface
- Docker containerization
- Hugging Face model caching
- Git repository
- GitHub repository
-
-
-📦 Main Components
-app.py
-Starts the Gradio web application.
-
-rag_pipeline.py
-Connects the retrieval and generation components together.
-
-pdf_loader/pdf_loader.py
-Loads and extracts text from PDF documents.
-
-chunker/text_chunker.py
-Splits extracted text into manageable chunks.
-
-embeddings/embedding_model.py
-Loads the embedding model.
-
-embeddings/embed_documents.py
-Creates embeddings for document chunks.
-
-database/chroma_store.py
-Stores and searches document embeddings using ChromaDB.
-
-database/ingest.py
-Handles document ingestion into the vector database.
-
-database/retriever.py
-Handles document retrieval.
-
-generator/text_generator.py
-Loads the local Hugging Face text-generation model.
-
-Dockerfile
-Defines the Docker environment used to run Campus-IQ.
-
 
 🌟 Project Goal
 The goal of Campus-IQ is to demonstrate how modern AI systems can combine:
@@ -315,12 +274,16 @@ Local Language Model
 Retrieval-Augmented AI Assistant
 Campus-IQ is designed as a practical implementation of a local RAG-based knowledge assistant.
 
-👨‍💻 Author
-KrishneGowda KN
+<div align="center">
 
-GitHub:
-
-https://github.com/krishnegowda9
+```text
+ 💻 ─────────────────────────────────────────────────────────────── 💻
+ │                                                                 │
+ │   👨‍💻 Author    : KrishneGowda KN                                │
+ │   🌐 GitHub    : [https://github.com/krishnegowda9](https://github.com/krishnegowda9)                │
+ │   🚀 Status    : Building Open-Source AI & RAG Solutions          │
+ │                                                                 │
+ └─────────────────────────────────────────────────────────────────┘
 
 ⭐ Support
 If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
