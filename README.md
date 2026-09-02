@@ -10,8 +10,7 @@ Instead of relying only on an LLM's pre-trained knowledge, Campus-IQ uses **Retr
 
 Once you start the application locally or via Docker, open your browser and navigate to:
 
-- **Local App URL:** `http://localhost:7860/`
----
+- **Local App URL:** [http://localhost:7860/](http://localhost:7860/)
 
 ## ✨ Features
 
