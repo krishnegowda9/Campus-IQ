@@ -6,6 +6,11 @@ Campus-IQ is a local AI assistant that allows users to ask questions about campu
 
 Instead of relying only on an LLM's pre-trained knowledge, Campus-IQ uses **Retrieval-Augmented Generation (RAG)** to retrieve relevant information from PDF documents and provide that information to the language model as context.
 
+### 🌐 Accessing the Web Application
+
+Once you start the application locally or via Docker, open your browser and navigate to:
+
+- **Local App URL:** `http://localhost:7860/`
 ---
 
 ## ✨ Features
