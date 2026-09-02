@@ -32,9 +32,13 @@ def ask_rag(question):
         n_results=3
     )
 
-    documents = results.get("documents", [[]])[0]
+    # DEBUG LOGS: Check what ChromaDB actually returned
+    print(f"DEBUG: Raw ChromaDB Results -> {results}")
 
-    if not documents:
+    documents = results.get("documents", [[]])[0] if results and "documents" in results else []
+
+    if not documents or len(documents) == 0:
+        print("DEBUG: Documents array is empty!")
         return (
             "I could not find relevant information in the documents.",
             "No relevant documents found."
@@ -70,7 +74,6 @@ def ask_rag(question):
     sources = "### Retrieved Sources\n\n"
 
     for index, document in enumerate(documents, start=1):
-
         sources += f"**Source {index}**\n\n"
         sources += document
         sources += "\n\n---\n\n"

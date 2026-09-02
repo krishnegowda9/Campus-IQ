@@ -1,8 +1,12 @@
+# Virtual environment
 .venv/
+
+# Gradio files
 .gradio/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# ChromaDB local database
 chroma_db/
-.env
-.vscode/
-.idea/
