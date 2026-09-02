@@ -94,3 +94,99 @@ The retrieved documents are combined into a context that is passed to the local 
 6. Answer Generation
 The local Hugging Face model generates an answer using the retrieved context.
 
+## 📂 Project Structure
+
+```text
+Campus-IQ/
+├── app.py                  # Main Gradio application entry point
+├── rag_pipeline.py          # Core RAG orchestration pipeline
+├── Dockerfile               # Container build configuration
+├── requirements.txt         # Python dependency specifications
+│
+├── chunker/                 # Text splitting logic
+│   └── text_chunker.py
+├── database/                # Vector store setup, ingestion & retrieval
+│   ├── chroma_store.py
+│   ├── ingest.py
+│   └── retriever.py
+├── embeddings/              # Embedding model wrappers & batch generation
+│   ├── embedding_model.py
+│   └── embed_documents.py
+├── generator/               # Local Hugging Face LLM inference module
+│   └── text_generator.py
+├── pdf_loader/              # PDF parsing utilities
+│   └── pdf_loader.py
+└── data/                    # Document directory
+    └── pdfs/                # Source PDFs for ingestion
+
+Component,Technology
+Language,Python 3.x
+Embeddings,Hugging Face / Sentence Transformers
+Vector DB,ChromaDB
+PDF Processing,PyMuPDF
+User Interface,Gradio
+Inference,Hugging Face Transformers
+Containerization,Docker
+🚀 Quick Start
+Option 1: Running Locally
+Clone the repository
+
+Bash
+git clone [https://github.com/krishnegowda9/Campus-IQ.git](https://github.com/krishnegowda9/Campus-IQ.git)
+cd Campus-IQ
+Set up virtual environment
+
+Bash
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+Install dependencies
+
+Bash
+pip install -r requirements.txt
+Ingest Documents
+Place your PDF files inside data/pdfs/ and run the ingestion pipeline:
+
+Bash
+python -m database.ingest
+Launch the application
+
+Bash
+python app.py
+Access the app at http://localhost:7860.
+
+Option 2: Running with Docker
+Build image
+
+Bash
+docker build -t campus-iq .
+Run container
+
+Bash
+docker run -p 7860:7860 campus-iq
+Open http://localhost:7860 in your browser.
+
+🔑 Hugging Face Token Configuration (Optional)
+To avoid rate limiting warnings when downloading large models from Hugging Face Hub:
+
+Bash
+export HF_TOKEN="your_hugging_face_token"
+⚠️ Note: Never commit your secret tokens or API keys to git repository files.
+
+📌 Roadmap
+[x] Core RAG pipeline with local Hugging Face model & ChromaDB
+
+[x] Gradio UI & Docker support
+
+[ ] Direct PDF file upload from the web interface
+
+[ ] Multi-document collection filter & management
+
+[ ] Source citation highlights in generated responses
+
+[ ] Conversation memory for multi-turn chats
+
+👨‍💻 Author
+Developed by Krishnegowda K N. Show your support by dropping a ⭐ if you find this project helpful!
