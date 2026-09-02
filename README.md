@@ -12,6 +12,17 @@ Once you start the application locally or via Docker, open your browser and navi
 
 - **Local App URL:** [http://localhost:7860/](http://localhost:7860/)
 
+  ### 🤖 Models Used
+
+Campus-IQ runs completely local AI models from Hugging Face for embeddings and text generation:
+
+| Component | Model Name | Description |
+| :--- | :--- | :--- |
+| **Embedding Model** | `sentence-transformers/all-MiniLM-L6-v2` | Converts document chunks and user queries into 384-dimensional dense vector representations for semantic search. |
+| **Local LLM** | `google/flan-t5-base` | Seq2Seq text generation model used to synthesize answers grounded in retrieved document context. |
+
+
+
 ## 🔄 Final End-to-End Workflow
 
 ```gantt
