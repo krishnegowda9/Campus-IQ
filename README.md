@@ -163,19 +163,17 @@ Campus-IQ runs completely local AI models from Hugging Face for embeddings and t
 
 ### 🛠️ Tech Stack & Ecosystem
 
-### 🛠️ Tech Stack & Ecosystem
-
 | Layer | Technology | Purpose & Architectural Role |
 | :--- | :--- | :--- |
-| ![Backend](https://img.shields.io/badge/Language-3776AB?style=flat-square&logo=python&logoColor=white) | **Python 3.x** | Core programming language powering the entire backend |
-| ![AI Hub](https://img.shields.io/badge/AI_Hub-FFD21E?style=flat-square&logo=huggingface&logoColor=black) | **Hugging Face** | Central hub for pre-trained embeddings & LLM download pipelines |
-| ![Vectors](https://img.shields.io/badge/Embeddings-4B8BBE?style=flat-square&logo=python&logoColor=white) | **Sentence Transformers** | Encodes document chunks into dense 384-D vector representations |
-| ![Inference](https://img.shields.io/badge/Inference-FF6F00?style=flat-square&logo=tensorflow&logoColor=white) | **Transformers** | Executes local LLM text generation directly on machine hardware |
-| ![Vector DB](https://img.shields.io/badge/Vector_DB-008080?style=flat-square) | **ChromaDB** | Vector database for persistent similarity indexing & fast retrieval |
-| ![PDF](https://img.shields.io/badge/Parser-E25A1C?style=flat-square&logo=adobeacrobatreader&logoColor=white) | **PyMuPDF** | Ultra-fast PDF text extraction and document parsing engine |
-| ![UI](https://img.shields.io/badge/Frontend-orange?style=flat-square&logo=gradio&logoColor=white) | **Gradio** | Powers the interactive web application interface |
+| ![Python](https://img.shields.io/badge/Language-3776AB?style=flat-square&logo=python&logoColor=white) | **Python 3.x** | Core programming language powering the backend |
+| ![HuggingFace](https://img.shields.io/badge/AI_Hub-FFD21E?style=flat-square&logo=huggingface&logoColor=black) | **Hugging Face** | Central hub for pre-trained embeddings & LLM download pipelines |
+| ![SentenceTransformers](https://img.shields.io/badge/Embeddings-4B8BBE?style=flat-square&logo=python&logoColor=white) | **Sentence Transformers** | Encodes document chunks into dense 384-D vector representations |
+| ![Transformers](https://img.shields.io/badge/Inference-FF6F00?style=flat-square&logo=tensorflow&logoColor=white) | **Transformers** | Executes local LLM text generation directly on hardware |
+| ![ChromaDB](https://img.shields.io/badge/Vector_DB-008080?style=flat-square) | **ChromaDB** | Vector database for persistent similarity indexing & retrieval |
+| ![PyMuPDF](https://img.shields.io/badge/Parser-E25A1C?style=flat-square&logo=adobeacrobatreader&logoColor=white) | **PyMuPDF** | Ultra-fast PDF text extraction and parsing engine |
+| ![Gradio](https://img.shields.io/badge/Frontend-orange?style=flat-square&logo=gradio&logoColor=white) | **Gradio** | Powers the interactive web application interface |
 | ![Docker](https://img.shields.io/badge/Container-2496ED?style=flat-square&logo=docker&logoColor=white) | **Docker** | Isolated container environment for multi-platform deployment |
-| ![Version Control](https://img.shields.io/badge/VCS-181717?style=flat-square&logo=github&logoColor=white) | **Git & GitHub** | Source code management, repository hosting, and versioning |
+| ![GitHub](https://img.shields.io/badge/VCS-181717?style=flat-square&logo=github&logoColor=white) | **Git & GitHub** | Source code management and repository hosting |
 
 
 ### 🚀 Quick Start (Local Setup)
@@ -273,18 +271,17 @@ Local Language Model
    =
 Retrieval-Augmented AI Assistant
 Campus-IQ is designed as a practical implementation of a local RAG-based knowledge assistant.
-
 <div align="center">
 
 ```text
  💻 ─────────────────────────────────────────────────────────────── 💻
  │                                                                 │
  │   👨‍💻 Author    : KrishneGowda KN                                │
- │   🌐 GitHub    : [https://github.com/krishnegowda9](https://github.com/krishnegowda9)                │
+ │   🌐 GitHub    : [github.com/krishnegowda9](https://github.com/krishnegowda9)                        │
  │   🚀 Status    : Building Open-Source AI & RAG Solutions          │
  │                                                                 │
  └─────────────────────────────────────────────────────────────────┘
-
+<
 ⭐ Support
 If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
 
