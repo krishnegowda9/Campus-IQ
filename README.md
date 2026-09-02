@@ -61,39 +61,6 @@ Instead of relying only on an LLM's pre-trained knowledge, Campus-IQ uses **Retr
                     │    Final Answer     │
                     └─────────────────────┘
 
-🔄 RAG Pipeline
-Campus-IQ follows a Retrieval-Augmented Generation workflow.
-
-1. Document Ingestion
-PDF documents are loaded from:
-
-data/pdfs/
-
-The PDF text is extracted and divided into smaller chunks.
-
-2. Embedding Generation
-Each document chunk is converted into a numerical vector using a Hugging Face embedding model.
-
-Current embedding size:
-
-384 dimensions
-
-3. Vector Storage
-The generated embeddings and document chunks are stored in a persistent ChromaDB collection.
-
-campus_iq_documents
-
-4. Question Retrieval
-When a user asks a question, the question is converted into an embedding.
-
-Campus-IQ searches ChromaDB for the most relevant document chunks.
-
-5. Context Construction
-The retrieved documents are combined into a context that is passed to the local text generation model.
-
-6. Answer Generation
-The local Hugging Face model generates an answer using the retrieved context.
-
 ## 📂 Project Structure
 
 ```text
@@ -119,74 +86,186 @@ Campus-IQ/
 └── data/                    # Document directory
     └── pdfs/                # Source PDFs for ingestion
 
-Component,Technology
-Language,Python 3.x
-Embeddings,Hugging Face / Sentence Transformers
-Vector DB,ChromaDB
-PDF Processing,PyMuPDF
-User Interface,Gradio
-Inference,Hugging Face Transformers
-Containerization,Docker
-🚀 Quick Start
-Option 1: Running Locally
-Clone the repository
+### 🔄 How the RAG Pipeline Works
+1. **PDF Ingestion:** Extracts text from documents stored in `data/pdfs/`.
+2. **Text Chunking:** Splits extracted text into smaller, manageable chunks for fast retrieval.
+3. **Embedding Generation:** Converts each chunk into a 384-dimensional vector representation using a Hugging Face model.
+4. **Vector Storage:** Stores embeddings and text chunks persistently in the `campus_iq_documents` ChromaDB collection.
+5. **Question Embedding:** Embeds the incoming user query using the same embedding model.
+6. **Semantic Search:** Performs cosine similarity search in ChromaDB to retrieve the most relevant text chunks.
+7. **Context Assembly:** Combines the top retrieved chunks into a prompt context block.
+8. **Answer Generation:** Runs the local Hugging Face model to synthesize a final answer grounded in the retrieved context.
+
+### 🛠️ Tech Stack
+
+| Technology | Purpose |
+| :--- | :--- |
+| **Python** | Core programming language |
+| **Hugging Face** | AI model ecosystem |
+| **Sentence Transformers** | Dense vector embeddings |
+| **Transformers** | Local text generation inference |
+| **ChromaDB** | Vector database for similarity search |
+| **PyMuPDF** | High-performance PDF text extraction |
+| **Gradio** | Interactive web UI framework |
+| **Docker** | Containerization and environment isolation |
+| **Git** | Distributed version control |
+| **GitHub** | Source code hosting and repository management |
+
+### 🚀 Quick Start (Local Setup)
+
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/krishnegowda9/Campus-IQ.git](https://github.com/krishnegowda9/Campus-IQ.git)
+   cd Campus-IQ
+
+2.Create and activate a virtual environment
 
 Bash
-git clone [https://github.com/krishnegowda9/Campus-IQ.git](https://github.com/krishnegowda9/Campus-IQ.git)
-cd Campus-IQ
-Set up virtual environment
-
-Bash
+# Create environment
 python -m venv .venv
-# Windows:
-.venv\Scripts\activate
-# macOS/Linux:
-source .venv/bin/activate
-Install dependencies
+
+3.Install dependencies
 
 Bash
 pip install -r requirements.txt
-Ingest Documents
-Place your PDF files inside data/pdfs/ and run the ingestion pipeline:
 
-Bash
+4.Add and ingest documents
+Place your PDF files in data/pdfs/ and run the ingestion pipeline:
 python -m database.ingest
-Launch the application
+Ingestion Flow: PDF ──► Text Extraction ──► Chunking ──► Embedding Generation ──► ChromaDB
 
-Bash
+5.Start the application
 python app.py
-Access the app at http://localhost:7860.
 
-Option 2: Running with Docker
-Build image
+Access the web interface at http://localhost:7860.
 
-Bash
+
+
+🐳 Run with Docker
+Campus-IQ can also be run as a Docker container
+Build the Image
 docker build -t campus-iq .
-Run container
 
-Bash
+Run the Container
 docker run -p 7860:7860 campus-iq
-Open http://localhost:7860 in your browser.
 
-🔑 Hugging Face Token Configuration (Optional)
-To avoid rate limiting warnings when downloading large models from Hugging Face Hub:
+Open the application:
+http://localhost:7860
 
-Bash
-export HF_TOKEN="your_hugging_face_token"
-⚠️ Note: Never commit your secret tokens or API keys to git repository files.
+Check the Container
+docker ps
 
-📌 Roadmap
-[x] Core RAG pipeline with local Hugging Face model & ChromaDB
+Expected port mapping:
+0.0.0.0:7860->7860/tcp
 
-[x] Gradio UI & Docker support
+🤗 Hugging Face
+Campus-IQ uses Hugging Face models for embeddings and local text generation.
 
-[ ] Direct PDF file upload from the web interface
+During startup you may see:
+Warning: You are sending unauthenticated requests to the HF Hub.
+This is a warning and does not necessarily mean the application has failed.
 
-[ ] Multi-document collection filter & management
+Authentication can provide higher Hugging Face Hub rate limits.
 
-[ ] Source citation highlights in generated responses
+For production usage, configure your Hugging Face token securely.
 
-[ ] Conversation memory for multi-turn chats
+⚠️ Never commit your Hugging Face token to GitHub.
+
+
+💡 Example Questions
+Once the required documents are loaded, users can ask questions such as:
+What is Docker?
+
+What is containerization?
+
+What is a Dockerfile?
+
+What is Docker Compose?
+
+What is a Docker Volume?
+
+What is the difference between Docker and a virtual machine?
+
+Why are containers lightweight?
+
+How does Docker work?
+
+
+📌 Current Status
+Completed
+ PDF loading
+ PDF text extraction
+ Text chunking
+ Embedding generation
+ ChromaDB integration
+ Semantic search
+ Document retrieval
+ Local text generation
+ RAG pipeline
+ Gradio interface
+ Docker containerization
+ Hugging Face model caching
+ Git repository
+ GitHub repository
+
+
+📦 Main Components
+app.py
+Starts the Gradio web application.
+
+rag_pipeline.py
+Connects the retrieval and generation components together.
+
+pdf_loader/pdf_loader.py
+Loads and extracts text from PDF documents.
+
+chunker/text_chunker.py
+Splits extracted text into manageable chunks.
+
+embeddings/embedding_model.py
+Loads the embedding model.
+
+embeddings/embed_documents.py
+Creates embeddings for document chunks.
+
+database/chroma_store.py
+Stores and searches document embeddings using ChromaDB.
+
+database/ingest.py
+Handles document ingestion into the vector database.
+
+database/retriever.py
+Handles document retrieval.
+
+generator/text_generator.py
+Loads the local Hugging Face text-generation model.
+
+Dockerfile
+Defines the Docker environment used to run Campus-IQ.
+
+
+🌟 Project Goal
+The goal of Campus-IQ is to demonstrate how modern AI systems can combine:
+Documents
+   +
+Embeddings
+   +
+Vector Database
+   +
+Semantic Search
+   +
+Local Language Model
+   =
+Retrieval-Augmented AI Assistant
+Campus-IQ is designed as a practical implementation of a local RAG-based knowledge assistant.
 
 👨‍💻 Author
-Developed by Krishnegowda K N. Show your support by dropping a ⭐ if you find this project helpful!
+KrishneGowda KN
+
+GitHub:
+
+https://github.com/krishnegowda9
+
+⭐ Support
+If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
+
