@@ -12,20 +12,61 @@ Once you start the application locally or via Docker, open your browser and navi
 
 - **Local App URL:** [http://localhost:7860/](http://localhost:7860/)
 
-## ✨ Features
+## 🔄 Final End-to-End Workflow
 
-- 📄 PDF document ingestion
-- ✂️ Automatic text chunking
-- 🧠 Hugging Face embeddings
-- 🔎 Semantic document retrieval
-- 🗄️ Persistent ChromaDB vector database
-- 🤖 Local Hugging Face text generation model
-- 🔗 Retrieval-Augmented Generation (RAG) pipeline
-- 💬 Interactive Gradio interface
-- 🐳 Docker support
-- 💾 Local Hugging Face model caching
-- 📚 Retrieved source display
-- 🔒 Runs locally without requiring an external LLM API
+```gantt
+┌────────────────────────────────────────────────────────────────────────┐
+│                          📄 PDF DOCUMENTS                             │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │   📄 PyMuPDF Loader  │
+                        └───────────┬──────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │  ✂️ Text Chunker     │
+                        └───────────┬──────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │ 🧠 Embedding Model   │
+                        │ (Hugging Face 384-D) │
+                        └───────────┬──────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │ 🗄️ Vector Database    │
+                        │    (ChromaDB Store)  │
+                        └───────────┬──────────┘
+                                    │
+ ┌──────────────────────────────────┴──────────────────────────────────┐
+ │                         👤 USER QUESTION                             │
+ └──────────────────────────────────┬──────────────────────────────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │ 🔎 Semantic Search   │
+                        │   (Top Matching)     │
+                        └───────────┬──────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │ 🧩 Context Builder   │
+                        └───────────┬──────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │ 🤖 Local LLM         │
+                        │   (Hugging Face)     │
+                        └───────────┬──────────┘
+                                    │
+                                    ▼
+                        ┌──────────────────────┐
+                        │ 💬 Gradio Interface  │
+                        │ (Answer + Sources)   │
+                        └──────────────────────┘
 
 ---
 
